@@ -1,27 +1,16 @@
 FROM ashafer01/ubuntu-base:18.04
 
-ENV ANOPE_VERSION=2.0.6
+COPY ashafer01-anope_*.deb /tmp/
+RUN apt-get -y update && apt-get -y install /tmp/ashafer01-anope_*.deb
 
-# basic deps beyond ashafer01/ubuntu-base
-RUN apt-get -y update && apt-get -y install cmake
-
-# get the latest anope source
-WORKDIR /root/dockerbuild
-ADD https://github.com/anope/anope/releases/download/$ANOPE_VERSION/anope-$ANOPE_VERSION-source.tar.gz .
-RUN tar -xzvf anope-$ANOPE_VERSION-source.tar.gz && mkdir -p /opt/anope
-
-# configure the build
-WORKDIR anope-$ANOPE_VERSION-source
-COPY config.cache .
-RUN ./Config -quick
-
-# Run the build
-WORKDIR build
-RUN make && make install
+# TODO copy in default configs
+# TODO write default configs
 
 # clean up
-WORKDIR /opt/anope
-RUN chown -R irc:irc /opt/anope && rm -rf /root/dockerbuild
+RUN rm -f /tmp/ashafer01-anope_*.deb \
+ && apt-get -y clean \
+ && apt-get -y autoclean \
+ && apt-get -y autoremove
 
 VOLUME /opt/anope/conf
 VOLUME /opt/anope/data

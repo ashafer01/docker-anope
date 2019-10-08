@@ -1,0 +1,8 @@
+Package: ashafer01-anope
+Version: 2.0.6
+Description: Anope IRC Services deb packaged by ashafer01
+Maintainer: Alex <ashafer01@github.com>
+Architecture: all
+Section: comm
+Essential: no
+Priority: optional

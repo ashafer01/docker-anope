@@ -1,6 +1,31 @@
+##
+## build
+##
+FROM ashafer01/ubuntu-base:18.04 AS build
+
+ENV ANOPE_VERSION=2.0.6
+
+RUN apt-get -y update && apt-get -y install \
+    cmake \
+    build-essential \
+    wget
+
+RUN mkdir -p /opt/anope /tmp/build /tmp/deb /tmp/artifacts \
+ && chown irc:irc /opt/anope /tmp/build /tmp/deb /tmp/artifacts
+
+USER irc:irc
+COPY --chown=irc:irc config.cache build.sh /tmp/build/
+COPY --chown=irc:irc deb-skel/ /tmp/deb/
+WORKDIR /tmp
+
+RUN /tmp/build/build.sh
+
+##
+## production
+##
 FROM ashafer01/ubuntu-base:18.04
 
-COPY ashafer01-anope_*.deb /tmp/
+COPY --from=build /tmp/artifacts/ashafer01-anope_*.deb /tmp/
 RUN apt-get -y update && apt-get -y install /tmp/ashafer01-anope_*.deb
 
 # TODO copy in default configs

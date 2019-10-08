@@ -29,8 +29,8 @@ FROM ashafer01/ubuntu-base:18.04
 COPY --from=build /tmp/artifacts/ashafer01-anope_*.deb /tmp/
 RUN apt-get -y update && apt-get -y install /tmp/ashafer01-anope_*.deb
 
-# TODO copy in default configs
-# TODO write default configs
+# copy in default configs
+COPY --chown=irc:irc conf/ /opt/anope/conf/
 
 # clean up
 RUN rm -f /tmp/ashafer01-anope_*.deb \

@@ -3,7 +3,7 @@ set -e
 
 cd /tmp/build
 
-# get the latest unreal source
+# get the latest anope source
 wget "https://github.com/anope/anope/releases/download/$ANOPE_VERSION/anope-$ANOPE_VERSION-source.tar.gz"
 tar -xzvf "anope-$ANOPE_VERSION-source.tar.gz"
 cd "anope-$ANOPE_VERSION-source"
